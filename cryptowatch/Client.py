@@ -1,7 +1,8 @@
 
 import requests
-from urlparse import urljoin, parse_qsl, urlunparse, urlparse
 import urllib
+import urllib.parse
+from urllib.parse import urljoin
 
 import cryptowatch.Msg as Msg
 
@@ -30,11 +31,11 @@ def _include_allowance(res, json, kwargs):
         return res
         
 def _add_query_string(url, params):
-    x = list(urlparse(url))
-    q = dict(parse_qsl(x[4]))
+    x = list(urllib.parse.urlparse(url))
+    q = dict(urllib.parse.parse_qsl(x[4]))
     q.update(params)
-    x[4] = urllib.urlencode(q)
-    return urlunparse(x)
+    x[4] = urllib.parse.urlencode(q)
+    return urllib.parse.urlunparse(x)
     
 def GetAllowance(**kwargs):
     """Request the status of your current allowance"""
@@ -196,7 +197,7 @@ class MarketClient():
         if('after' in kwargs):
             params['after'] = kwargs['after']
         if('periods' in kwargs):
-            params['periods'] = ",".join(kwargs['periods'])
+            params['periods'] = ",".join([str(x) for x in kwargs['periods']])
         url = _add_query_string(url, params)
         
         resp = _get_response(url)
@@ -207,37 +208,3 @@ class MarketClient():
             period_ms = int(period)*1000
             res[period] = [Msg.Candle(x, period_ms) for x in data]
         return _include_allowance(res, resp, kwargs)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

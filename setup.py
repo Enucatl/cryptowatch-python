@@ -18,7 +18,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name = 'cryptowatch',
-    version = '0.1.0.dev1',
+    version = '0.1.0.dev2',
     author = 'Aaron Stewart',
     author_email = 'aaron.a.stewart@gmail.com',
     license='MIT',
