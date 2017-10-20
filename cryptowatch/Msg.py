@@ -32,10 +32,10 @@ class Allowance():
 class Market():
     def __init__(self, json):
         self.exchange = json['exchange']
-        self.currencyPair = json['currencyPair']
+        self.pair = json['pair']
         
     def __str__(self):
-        return "<Market> %s: %s" % (self.exchange, self.currencyPair)
+        return "<Market> %s: %s" % (self.exchange, self.pair)
     def __repr__(self):
         return self.__str__()
         

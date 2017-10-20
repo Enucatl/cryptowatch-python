@@ -1,12 +1,13 @@
-
 import requests
 import urllib
 import urllib.parse
 from urllib.parse import urljoin
+import logging
 
 import cryptowatch.Msg as Msg
 
 API_URL = 'https://api.cryptowat.ch/'
+logger = logging.getLogger(__name__)
 
 
 
@@ -21,6 +22,7 @@ def _raiseIfError(response):
 def _get_response(url):
     resp = requests.get(url)
     _raiseIfError(resp)
+    to_json = resp.json()
     return resp.json()
     
 def _include_allowance(res, json, kwargs):
@@ -107,17 +109,17 @@ def GetAllSummaries(split_slug = False, **kwargs):
 
 
 class MarketClient():
-    def __init__(self, exchange, currencyPair, api_url=API_URL):
+    def __init__(self, exchange, pair, api_url=API_URL):
         """
         Initialize this MarketClient.
         
         exchange: The exchange on which the market exists
-        currencyPair: The currency pair of interest for this client
+        pair: The currency pair of interest for this client
         """
         self.api_url = api_url
         self.exchange = exchange
-        self.currencyPair = currencyPair
-        self.base_url = urljoin(self.api_url, "markets/%s/%s/" % (exchange, currencyPair))
+        self.pair = pair
+        self.base_url = urljoin(self.api_url, "markets/%s/%s/" % (exchange, pair))
         
     def GetPrice(self, **kwargs):
         """
